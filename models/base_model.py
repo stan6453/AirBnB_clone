@@ -11,14 +11,21 @@ class BaseModel:
     BaseModel Class: All future classes subclasses it. \
     Contains attributes common to all classes
     '''
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         '''
         Intanstiation of the class.
         Args: (self)
         '''
-        self.id = str(uuid4())
-        self.created_at = self.updated_at = datetime.now()
-
+        if (len(kwargs) != 0):
+            for k, v in kwargs.items():
+                if k != '__class__':
+                    if k in ['created_at', 'updated_at']:
+                        v = datetime.fromisoformat(v)
+                    setattr(self, k, v)
+        else:
+            self.id = str(uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = datetime.now()
     def __str__(self):
         '''
         String Representation of the class.
