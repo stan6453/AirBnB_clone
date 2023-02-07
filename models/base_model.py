@@ -4,7 +4,7 @@ Module for BaseModel
 '''
 from uuid import uuid4
 from datetime import datetime
-
+from models.__init__ import storage
 
 class BaseModel:
     '''
@@ -16,6 +16,9 @@ class BaseModel:
         Intanstiation of the class.
         Args: (self)
         '''
+        self.id = str(uuid4())
+        self.created_at = datetime.now()
+        self.updated_at = datetime.now()
         if (len(kwargs) != 0):
             for k, v in kwargs.items():
                 if k != '__class__':
@@ -23,9 +26,7 @@ class BaseModel:
                         v = datetime.fromisoformat(v)
                     setattr(self, k, v)
         else:
-            self.id = str(uuid4())
-            self.created_at = datetime.now()
-            self.updated_at = datetime.now()
+            storage.new(self)
     def __str__(self):
         '''
         String Representation of the class.
@@ -40,6 +41,7 @@ class BaseModel:
         Args: (self)
         '''
         self.updated_at = datetime.now()
+        storage.save()
 
     def to_dict(self):
         '''
