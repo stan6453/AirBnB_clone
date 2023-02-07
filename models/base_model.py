@@ -4,7 +4,7 @@ Module for BaseModel
 '''
 from uuid import uuid4
 from datetime import datetime
-from models.__init__ import storage
+import models
 
 class BaseModel:
     '''
@@ -26,7 +26,7 @@ class BaseModel:
                         v = datetime.fromisoformat(v)
                     setattr(self, k, v)
         else:
-            storage.new(self)
+            models.storage.new(self)
     def __str__(self):
         '''
         String Representation of the class.
@@ -41,7 +41,7 @@ class BaseModel:
         Args: (self)
         '''
         self.updated_at = datetime.now()
-        storage.save()
+        models.storage.save()
 
     def to_dict(self):
         '''
