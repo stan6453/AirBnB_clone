@@ -4,6 +4,7 @@ Module for FileNotFoundError Class
 '''
 import json
 
+
 class FileStorage:
     '''Class for Serialization and Deserialization'''
     __file_path = 'file.json'
@@ -19,7 +20,7 @@ class FileStorage:
         Args: obj
         '''
         self.__objects[f'{obj.__class__.__name__}.{obj.id}'] = obj
-        
+
     def save(self):
 	    '''
         Serializes __objects to the JSON file (path: __file_path)
