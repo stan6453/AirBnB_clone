@@ -6,11 +6,13 @@ from uuid import uuid4
 from datetime import datetime
 import models
 
+
 class BaseModel:
     '''
     BaseModel Class: All future classes subclasses it. \
     Contains attributes common to all classes
     '''
+
     def __init__(self, *args, **kwargs):
         '''
         Intanstiation of the class.
@@ -27,6 +29,7 @@ class BaseModel:
                     setattr(self, k, v)
         else:
             models.storage.new(self)
+
     def __str__(self):
         '''
         String Representation of the class.
