@@ -4,7 +4,6 @@ Module for FileNotFoundError Class
 '''
 import json
 
-
 class FileStorage:
     '''Class for Serialization and Deserialization'''
     __file_path = 'file.json'
@@ -13,16 +12,16 @@ class FileStorage:
     def all(self):
         '''Returns the dictionary __objects'''
         return self.__objects
-
+    
     def new(self, obj):
-	    '''
+        '''
         Sets in __objects the obj with key <obj class name>.id
         Args: obj
         '''
         self.__objects[f'{obj.__class__.__name__}.{obj.id}'] = obj
-
+        
     def save(self):
-	    '''
+        '''
         Serializes __objects to the JSON file (path: __file_path)
         '''
         obj_dict = {k: v.to_dict() for k, v in self.__objects.items() if hasattr(v, 'to_dict')}
@@ -30,7 +29,7 @@ class FileStorage:
             json.dump(obj_dict, file)
 
     def reload(self):
-	    '''
+        '''
         Deserializes the JSON file to __objects (only if the JSON file\
         (__file_path) exists ; otherwise, do nothing.
         '''
