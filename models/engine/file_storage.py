@@ -21,7 +21,7 @@ class FileStorage:
         self.__objects[f'{obj.__class__.__name__}.{obj.id}'] = obj
         
     def save(self):
-		'''
+	'''
         Serializes __objects to the JSON file (path: __file_path)
         '''
         obj_dict = {k: v.to_dict() for k, v in self.__objects.items() if hasattr(v, 'to_dict')}
@@ -29,7 +29,7 @@ class FileStorage:
             json.dump(obj_dict, file)
 
     def reload(self):
-		'''
+	'''
         Deserializes the JSON file to __objects (only if the JSON file\
         (__file_path) exists ; otherwise, do nothing.
         '''
