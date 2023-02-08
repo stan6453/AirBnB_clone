@@ -9,7 +9,7 @@ import shlex
 import models
 from models.base_model import BaseModel
 
-models = [
+CLASSES = [
     "BaseModel",
     "User",
     "City",
@@ -24,6 +24,7 @@ class HBNBCommand(cmd.Cmd):
     """Airbnb command processor/interpreter."""
 
     prompt = '(hbnb) '
+    storage = models.storage
 
     def do_EOF(self, line):
         '''End the program on EOF'''
@@ -43,12 +44,12 @@ class HBNBCommand(cmd.Cmd):
         if len(arr) == 0:
             print('** class name missing **')
             return None
-        if arr[0] not in models:
+        if arr[0] not in CLASSES:
             print("** class doesn't exist **")
             return None
 
         '''Code that does actual work'''
-        print(eval(args[0])().id)
+        print(eval(arr[0])().id)
         self.storage.save()
 
     def do_show(self, line):
@@ -57,19 +58,19 @@ class HBNBCommand(cmd.Cmd):
         if len(arr) == 0:
             print('** class name missing **')
             return None
-        if arr[0] not in models:
+        if arr[0] not in CLASSES:
             print("** class doesn't exist **")
             return None
         if len(arr) < 2:
             print("** instance id missing **")
             return None
 
-            '''Code that deos the main work'''
-            key = "{}.{}".format(args[0], args[1])
-            if key not in self.storage.all():
-                print("** no instance found **")
-            else:
-                print(self.storage.all()[key])
+        '''Code that deos the main work'''
+        key = "{}.{}".format(arr[0], arr[1])
+        if key not in self.storage.all():
+            print("** no instance found **")
+        else:
+            print(self.storage.all()[key])
 
     def do_destroy(self, line):
         ''' Delete an instance based on the class name and id (save the change into the JSON file).'''
@@ -77,7 +78,7 @@ class HBNBCommand(cmd.Cmd):
         if len(arr) == 0:
             print('** class name missing **')
             return None
-        if arr[0] not in models:
+        if arr[0] not in CLASSES:
             print("** class doesn't exist **")
             return None
         if len(arr) < 2:
@@ -98,7 +99,7 @@ class HBNBCommand(cmd.Cmd):
         if not arr:
             print([str(obj) for obj in objects])
         else:
-            if len(arr) > 0 and arr[0] not in models:
+            if len(arr) > 0 and arr[0] not in CLASSES:
                 print("** class doesn't exist **")
             else:
                 print([str(obj) for obj in objects
@@ -113,7 +114,7 @@ class HBNBCommand(cmd.Cmd):
         if len(arr) == 0:
             print('** class name missing **')
             return None
-        if arr[0] not in models:
+        if arr[0] not in CLASSES:
             print("** class doesn't exist **")
             return None
         if len(arr) < 2:
