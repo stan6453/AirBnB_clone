@@ -6,7 +6,19 @@ Command line interpreter for the Airbnb cmd interface
 import cmd
 import shlex
 
-models = ['BaseModel']
+import models
+from models.base_model import BaseModel
+
+models = [
+    "BaseModel",
+    "User",
+    "City",
+    "Place",
+    "State",
+    "Amenity",
+    "Review"
+]
+
 
 class HBNBCommand(cmd.Cmd):
     """Airbnb command processor/interpreter."""
@@ -35,11 +47,9 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return None
 
-        #Create an instance of BaseModel
-
-        #Save to the json file
-
-        #Print its id
+        '''Code that does actual work'''
+        print(eval(args[0])().id)
+        self.storage.save()
 
     def do_show(self, line):
         '''Print the string representation of an instance based on the class name and id'''
@@ -54,12 +64,12 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return None
 
-            #Search and print instace
-
-            #if no instance id is fount, print error(edit)
-            if False:
+            '''Code that deos the main work'''
+            key = "{}.{}".format(args[0], args[1])
+            if key not in self.storage.all():
                 print("** no instance found **")
-                return None
+            else:
+                print(self.storage.all()[key])
 
     def do_destroy(self, line):
         ''' Delete an instance based on the class name and id (save the change into the JSON file).'''
@@ -74,32 +84,25 @@ class HBNBCommand(cmd.Cmd):
             print("** instance id missing **")
             return None
 
-        #load json from file
-
-        #search for object based on its id
-
-        #delete the object fom the array
-
-        #save the remeaining back to json file
-
-        #if no instance id is fount, print error(edit)
-        if False:
+        key = "{}.{}".format(*arr)
+        if key in self.storage.all():
+            del self.storage.all()[key]
+            self.storage.save()
+        else:
             print("** no instance found **")
-            return None
 
     def do_all(self, line):
         '''Print all string representation of all instances based or not on the class name.'''
         arr = shlex.split(line)
-        if len(arr) > 0 and arr[0] not in models:
-            print("** class doesn't exist **")
-            return None
-
-        #print string repesentaion based on selected Model
-        if len(arr) > 0:
-            model = arr[0]
-
-        #print all insatnces if the Model is not given
-
+        objects = self.storage.all().values()
+        if not arr:
+            print([str(obj) for obj in objects])
+        else:
+            if len(arr) > 0 and arr[0] not in models:
+                print("** class doesn't exist **")
+            else:
+                print([str(obj) for obj in objects
+                       if arr[0] in str(obj)])
 
     def do_update(self, line):
         '''
@@ -116,12 +119,6 @@ class HBNBCommand(cmd.Cmd):
         if len(arr) < 2:
             print("** instance id missing **")
             return None
-
-        #if id object not found, print error and return (edit)
-        if False:
-            print("** no instance found **")
-            return None
-
         if len(arr) < 3:
             print("** attribute name missing **")
             return None
@@ -129,16 +126,19 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
             return None
 
-        #load json
+        instance_id = "{}.{}".format(arr[0], arr[1])
 
-        #search for entrey with the particular id
-        for i in arr:
-            print(i)
+        if instance_id in self.storage.all():
+            obj = self.storage.all()[instance_id]
+            if arr[2] in type(obj).__dict__:
+                v_type = type(obj.__class__.__dict__[arr[2]])
+                setattr(obj, arr[2], v_type(arr[3]))
+            else:
+                setattr(obj, arr[2], arr[3])
+        else:
+            print("** no instance found **")
 
-    def do_test(self, line):
-        arr = shlex.split(line)
-        for i in arr:
-            print(i)
+        self.storage.save()
 
 
 if __name__ == '__main__':
