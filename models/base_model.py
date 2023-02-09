@@ -54,6 +54,6 @@ class BaseModel:
         '''
         dictentry = self.__dict__.copy()
         dictentry['__class__'] = self.__class__.__name__
-        dictentry['created_at'] = datetime.now().isoformat()
-        dictentry['updated_at'] = datetime.now().isoformat()
+        dictentry['created_at'] = self.created_at.isoformat()
+        dictentry['updated_at'] = self.updated_at.isoformat()
         return dictentry
