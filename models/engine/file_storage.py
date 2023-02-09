@@ -4,6 +4,8 @@ Module for FileNotFoundError Class
 '''
 import json
 
+from models.base_model import BaseModel
+
 class FileStorage:
     '''Class for Serialization and Deserialization'''
     __file_path = 'file.json'
@@ -24,7 +26,7 @@ class FileStorage:
         '''
         Serializes __objects to the JSON file (path: __file_path)
         '''
-        obj_dict = {k: v.to_dict() for k, v in self.__objects.items() if hasattr(v, 'to_dict')}
+        obj_dict = {k: v.to_dict() for k, v in self.__objects.items()}
         with open(self.__file_path, 'w') as file:
             json.dump(obj_dict, file)
 
@@ -37,7 +39,7 @@ class FileStorage:
             with open(self.__file_path, 'r') as file:
                 obj_load = json.load(file)
                 for k, v in obj_load.items():
-                    self.__objects[k]  = eval(f'{v.__class__.__name__}(**v)')
+                    self.__objects[k]  = eval(v["__class__"])(**v)
         except FileNotFoundError:
             pass
 
