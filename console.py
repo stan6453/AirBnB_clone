@@ -8,6 +8,7 @@ import shlex
 
 import models
 from models.base_model import BaseModel
+from models.user import User
 
 CLASSES = [
     "BaseModel",
@@ -140,6 +141,7 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
 
         self.storage.save()
+
 
 
 if __name__ == '__main__':
