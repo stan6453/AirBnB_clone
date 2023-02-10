@@ -47,7 +47,6 @@ class HBNBCommand(cmd.Cmd):
         if arr[0] not in CLASSES:
             print("** class doesn't exist **")
             return None
-
         '''Code that does actual work'''
         print(eval(arr[0])().id)
         self.storage.save()
@@ -64,7 +63,6 @@ class HBNBCommand(cmd.Cmd):
         if len(arr) < 2:
             print("** instance id missing **")
             return None
-
         '''Code that deos the main work'''
         key = "{}.{}".format(arr[0], arr[1])
         if key not in self.storage.all():
@@ -84,8 +82,8 @@ class HBNBCommand(cmd.Cmd):
         if len(arr) < 2:
             print("** instance id missing **")
             return None
-
-        key = "{}.{}".format(*arr)
+        '''Code that deos the main work'''
+        key = "{}.{}".format(arr[0], arr[1])
         if key in self.storage.all():
             del self.storage.all()[key]
             self.storage.save()
@@ -99,11 +97,11 @@ class HBNBCommand(cmd.Cmd):
         if not arr:
             print([str(obj) for obj in objects])
         else:
-            if len(arr) > 0 and arr[0] not in CLASSES:
+            if arr[0] not in CLASSES:
                 print("** class doesn't exist **")
             else:
                 print([str(obj) for obj in objects
-                       if arr[0] in str(obj)])
+                       if arr[0] == obj.__class__.__name__])
 
     def do_update(self, line):
         '''
@@ -126,9 +124,8 @@ class HBNBCommand(cmd.Cmd):
         if len(arr) < 4:
             print("** value missing **")
             return None
-
+        '''Code that deos the main work'''
         instance_id = "{}.{}".format(arr[0], arr[1])
-
         if instance_id in self.storage.all():
             obj = self.storage.all()[instance_id]
             if arr[2] in type(obj).__dict__:
