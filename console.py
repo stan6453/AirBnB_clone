@@ -9,6 +9,11 @@ import shlex
 import models
 from models.base_model import BaseModel
 from models.user import User
+from models.city import City
+from models.amenity import Amenity
+from models.place import Place
+from models.state import State
+from models.review import Review
 
 CLASSES = [
     "BaseModel",
@@ -48,7 +53,6 @@ class HBNBCommand(cmd.Cmd):
         if arr[0] not in CLASSES:
             print("** class doesn't exist **")
             return None
-
         '''Code that does actual work'''
         print(eval(arr[0])().id)
         self.storage.save()
@@ -65,7 +69,6 @@ class HBNBCommand(cmd.Cmd):
         if len(arr) < 2:
             print("** instance id missing **")
             return None
-
         '''Code that deos the main work'''
         key = "{}.{}".format(arr[0], arr[1])
         if key not in self.storage.all():
@@ -85,8 +88,8 @@ class HBNBCommand(cmd.Cmd):
         if len(arr) < 2:
             print("** instance id missing **")
             return None
-
-        key = "{}.{}".format(*arr)
+        '''Code that deos the main work'''
+        key = "{}.{}".format(arr[0], arr[1])
         if key in self.storage.all():
             del self.storage.all()[key]
             self.storage.save()
@@ -100,11 +103,11 @@ class HBNBCommand(cmd.Cmd):
         if not arr:
             print([str(obj) for obj in objects])
         else:
-            if len(arr) > 0 and arr[0] not in CLASSES:
+            if arr[0] not in CLASSES:
                 print("** class doesn't exist **")
             else:
                 print([str(obj) for obj in objects
-                       if arr[0] in str(obj)])
+                       if arr[0] == obj.__class__.__name__])
 
     def do_update(self, line):
         '''
@@ -127,9 +130,8 @@ class HBNBCommand(cmd.Cmd):
         if len(arr) < 4:
             print("** value missing **")
             return None
-
+        '''Code that deos the main work'''
         instance_id = "{}.{}".format(arr[0], arr[1])
-
         if instance_id in self.storage.all():
             obj = self.storage.all()[instance_id]
             if arr[2] in type(obj).__dict__:
@@ -142,12 +144,19 @@ class HBNBCommand(cmd.Cmd):
 
         self.storage.save()
 
-    def helper_method(self, class_name, line):
-        """Handle some repeated actions"""
-        if line.strip() == ".all()":
-            print(eval(class_name + ".all()"))
-    def do_User(self, line):
-        self.helper_method('User', line)
+    def do_count(self, line):
+        """Retrieve the number of instances of a class"""
+        arr = shlex.split(line)
+        count = 0
+        for obj in models.storage.all().values():
+            if arr[0] == type(obj).__name__:
+                count += 1
+        print(count)
+
+    def default(self, line):
+        arr = shlex.split(line)
+
+
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
