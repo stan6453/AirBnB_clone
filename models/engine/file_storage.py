@@ -12,6 +12,7 @@ from models.city import City
 from models.place import Place
 from models.review import Review
 
+
 class FileStorage:
     '''Class for Serialization and Deserialization'''
     __file_path = 'file.json'
@@ -20,14 +21,14 @@ class FileStorage:
     def all(self):
         '''Returns the dictionary __objects'''
         return self.__objects
-    
+
     def new(self, obj):
         '''
         Sets in __objects the obj with key <obj class name>.id
         Args: obj
         '''
         self.__objects[f'{obj.__class__.__name__}.{obj.id}'] = obj
-        
+
     def save(self):
         '''
         Serializes __objects to the JSON file (path: __file_path)
@@ -45,7 +46,6 @@ class FileStorage:
             with open(self.__file_path, 'r') as file:
                 obj_load = json.load(file)
                 for k, v in obj_load.items():
-                    self.__objects[k]  = eval(v["__class__"])(**v)
+                    self.__objects[k] = eval(v["__class__"])(**v)
         except FileNotFoundError:
             pass
-
