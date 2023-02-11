@@ -12,3 +12,6 @@ class User(BaseModel):
     first_name = ''
     last_name = ''
 
+    @classmethod
+    def all(cls):
+        return [cls(**obj.__dict__) for obj in models.storage.all().values() if obj.__class__.__name__ == cls.__name__] 

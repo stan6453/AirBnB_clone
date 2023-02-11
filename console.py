@@ -142,7 +142,12 @@ class HBNBCommand(cmd.Cmd):
 
         self.storage.save()
 
-
+    def helper_method(self, class_name, line):
+        """Handle some repeated actions"""
+        if line.strip() == ".all()":
+            print(eval(class_name + ".all()"))
+    def do_User(self, line):
+        self.helper_method('User', line)
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
