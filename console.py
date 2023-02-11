@@ -178,8 +178,21 @@ class HBNBCommand(cmd.Cmd):
                         return action_map[command[0]](call)
                     else:
                         call = "{} {}".format(line1[0], command[1])
-                        call = call.replace(",","")
-                        return action_map["update"](call)
+                        if "{" in call:
+                            call = call.replace(",","")
+                            call = call.replace("{","")
+                            call = call.replace("}","")
+                            call = call.replace(":"," ")
+                            call = call.replace(",","")
+                            call = shlex.split(call)
+                            while(len(call) > 2):
+                                action_map["update"](" ".join(call))
+                                del call[2:4]
+                            return None
+                        else:
+                            call = call.replace(",","")
+                            return action_map["update"](call)
+    
 
         print("*** Unknown syntax: {}".format(line))
         return False
