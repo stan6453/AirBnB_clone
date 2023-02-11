@@ -5,6 +5,7 @@ Command line interpreter for the Airbnb cmd interface
 
 import cmd
 import shlex
+import re
 
 import models
 from models.base_model import BaseModel
@@ -154,7 +155,29 @@ class HBNBCommand(cmd.Cmd):
         print(count)
 
     def default(self, line):
-        arr = shlex.split(line)
+        """Default behaviour for cmd module when input is invalid"""
+        
+        action_map = {
+            "all": self.do_all,
+            "show": self.do_show,
+            "destroy": self.do_destroy,
+            "count": self.do_count,
+            "update": self.do_update,
+            "create": self.do_create
+        }
+
+        match = re.search(r"\.", line)
+        if match:
+            line1 = [line[:match.span()[0]], line[match.span()[1]:]]
+            match = re.search(r"\((.*?)\)", line1[1])
+            if match:
+                command = [line1[1][:match.span()[0]], match.group()[1:-1]]
+                if command[0] in action_map:
+                    call = "{} {}".format(line1[0], command[1])
+                    return action_map[command[0]](call)
+
+        print("*** Unknown syntax: {}".format(line))
+        return False
 
 
 
