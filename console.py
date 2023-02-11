@@ -156,7 +156,7 @@ class HBNBCommand(cmd.Cmd):
 
     def default(self, line):
         """Default behaviour for cmd module when input is invalid"""
-        
+
         action_map = {
             "all": self.do_all,
             "show": self.do_show,
@@ -173,8 +173,13 @@ class HBNBCommand(cmd.Cmd):
             if match:
                 command = [line1[1][:match.span()[0]], match.group()[1:-1]]
                 if command[0] in action_map:
-                    call = "{} {}".format(line1[0], command[1])
-                    return action_map[command[0]](call)
+                    if command[0] != "update":
+                        call = "{} {}".format(line1[0], command[1])
+                        return action_map[command[0]](call)
+                    else:
+                        call = "{} {}".format(line1[0], command[1])
+                        call = call.replace(",","")
+                        return action_map["update"](call)
 
         print("*** Unknown syntax: {}".format(line))
         return False
