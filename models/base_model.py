@@ -18,15 +18,14 @@ class BaseModel:
         Intanstiation of the class.
         Args: (self)
         '''
+        self.id = str(uuid4())
+        self.created_at = self.updated_at = datetime.now()
         if (len(kwargs) != 0):
             for k, v in kwargs.items():
                 if k != '__class__':
                     if k in ['created_at', 'updated_at']:
                         v = datetime.fromisoformat(v)
                     setattr(self, k, v)
-        elif not kwargs:
-            self.id = str(uuid4())
-            self.created_at = self.updated_at = datetime.now()
         else:
             models.storage.new(self)
 
