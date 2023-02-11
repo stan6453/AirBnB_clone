@@ -144,6 +144,18 @@ class HBNBCommand(cmd.Cmd):
 
         self.storage.save()
 
+    def do_count(self, line):
+        """Retrieve the number of instances of a class"""
+        arr = shlex.split(line)
+        count = 0
+        for obj in models.storage.all().values():
+            if arr[0] == type(obj).__name__:
+                count += 1
+        print(count)
+
+    def default(self, line):
+        arr = shlex.split(line)
+
 
 
 if __name__ == '__main__':
