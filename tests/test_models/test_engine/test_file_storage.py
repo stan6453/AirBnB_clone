@@ -19,6 +19,13 @@ class TestFileStorage(unittest.TestCase):
         storage._FileStorage__objects = {}
         if os.path.exists('file.json'):
              os.remove('file.json')
+    def test_attr_check(self):
+        self.assertTrue(hasattr(storage, '_FileStorage__objects'))
+        self.assertTrue(hasattr(storage, '_FileStorage__file_path'))
+        self.assertTrue(hasattr(storage, 'all'))
+        self.assertTrue(hasattr(storage, 'new'))
+        self.assertTrue(hasattr(storage, 'save'))
+        self.assertTrue(hasattr(storage, 'reload'))
     def test_type(self):
         self.assertEqual(type(storage), FileStorage)
         self.assertEqual(type(storage._FileStorage__file_path), str)
