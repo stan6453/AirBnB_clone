@@ -1,0 +1,10 @@
+header{
+    color:white;
+	height:70px;
+	width:100%;
+    border-bottom: 1px #CCCCCC;
+    background: #FF0000 url("/images/alx_logo.png") no-repeat;
+    background-size: contain;
+    background-position: calc(100% - 20px);
+}
+
