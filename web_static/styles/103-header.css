@@ -1,0 +1,15 @@
+header{
+	height:70px;
+	width:100%;
+    border-bottom: 1px solid #CCCCCC;
+    background: white url("/images/alx_logo.png") no-repeat;
+    background-size: contain;
+    background-position: 20px;
+}
+
+@media only screen and (max-width:550px),
+only screen and (max-device-width:550px) {
+    header{
+        background-size: 50px;
+    } 
+}
